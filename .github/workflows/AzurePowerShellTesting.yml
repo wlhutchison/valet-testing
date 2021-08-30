@@ -36,7 +36,6 @@ jobs:
         errorActionPreference: Stop
         failOnStandardError: true
         azPSVersion: LatestVersion
-        working-directory: williamh
         githubToken: "${{ github.token }}"
     - name: Run a multi-line script
       run: |
