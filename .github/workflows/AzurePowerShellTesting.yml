@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Job:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -30,12 +30,11 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          Set-AzContext -Subscription 9517abff-2943-4bef-b730-dbd1c00f23a1
           Write-Host "Testing 1.2..3..."
           Get-ChildItem
         errorActionPreference: Stop
         failOnStandardError: false
-        azPSVersion: LatestVersion
+        azPSVersion: 3.1.0
         githubToken: "${{ github.token }}"
     - name: Run a multi-line script
       run: |
