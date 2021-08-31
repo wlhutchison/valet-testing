@@ -30,10 +30,11 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
+          Set-AzContext -Subscription 9517abff-2943-4bef-b730-dbd1c00f23a1
           Write-Host "Testing 1.2..3..."
           Get-ChildItem
         errorActionPreference: Stop
-        failOnStandardError: true
+        failOnStandardError: false
         azPSVersion: LatestVersion
         githubToken: "${{ github.token }}"
     - name: Run a multi-line script
