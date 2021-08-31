@@ -30,7 +30,6 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          Set-AzContext -Subscription MSFT-SafeVelocity-PPE (fc45c2d1-ab9c-4b6b-bd2b-e015927da9c2)
           Write-Host "Testing 1.2..3..."
           Get-ChildItem
         errorActionPreference: Stop
