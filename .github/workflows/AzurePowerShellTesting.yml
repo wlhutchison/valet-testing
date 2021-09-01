@@ -30,8 +30,8 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          pwsh -Command {Write-Host "Testing 1.2..3..."
-          Get-ChildItem}
+          Write-Host "Testing 1.2..3..."
+          Get-ChildItem
         errorActionPreference: Stop
         failOnStandardError: false
         azPSVersion: 3.1.0
