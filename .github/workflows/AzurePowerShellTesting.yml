@@ -30,12 +30,12 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
+          cd williamh
           Write-Host "Testing 1.2..3..."
           Get-ChildItem
         errorActionPreference: Stop
-        failOnStandardError: false
-        azPSVersion: 3.1.0
-        githubToken: "${{ github.token }}"
+        failOnStandardError: true
+        azPSVersion: LatestVersion
     - name: Run a multi-line script
       run: |
         echo Add other tasks to build, test, and deploy your project.
