@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Job:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -30,7 +30,6 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          cd williamh
           Write-Host "Testing 1.2..3..."
           Get-ChildItem
         errorActionPreference: Stop
