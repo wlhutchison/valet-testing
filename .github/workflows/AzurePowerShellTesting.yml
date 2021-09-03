@@ -17,7 +17,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Job:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -35,7 +35,7 @@ jobs:
           Get-ChildItem
         errorActionPreference: Stop
         failOnStandardError: false
-        azPSVersion: 'latest'
+        azPSVersion: "latest"
     - name: Run a multi-line script
       run: |
         echo Add other tasks to build, test, and deploy your project.
