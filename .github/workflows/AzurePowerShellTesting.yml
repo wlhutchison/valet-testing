@@ -26,6 +26,7 @@ jobs:
       uses: Azure/login@v1
       with:
         creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        enable-AzPSSession: true
     - name: 'Azure PowerShell script: InlineScript'
       continue-on-error: true
       uses: azure/powershell@v1
@@ -35,7 +36,7 @@ jobs:
           Get-ChildItem
         errorActionPreference: Stop
         failOnStandardError: false
-        azPSVersion: 6.1.0
+        azPSVersion: latest
     - name: Run a multi-line script
       run: |
         echo Add other tasks to build, test, and deploy your project.
