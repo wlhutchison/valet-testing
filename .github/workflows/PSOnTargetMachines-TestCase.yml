@@ -1,0 +1,51 @@
+# This is a basic workflow to help you get started with Actions
+
+name: PowerShellOnTargetMachines-TestCase
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Job:
+    runs-on: windows-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: 'Azure PowerShell script: InlineScript'
+      continue-on-error: true
+      uses: Azure/login@v1
+      with:
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        enable-AzPSSession: true
+    - name: 'Azure PowerShell script: InlineScript'
+      continue-on-error: true
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |-
+          Write-Host "Testing 1.2..3..."
+          Get-ChildItem
+          $securePassword = ConvertTo-SecureString $(sysPassword) -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential($(sysAccount), $securePassword)
+          $Skip = New-PSSessionOption -SkipCACheck -SkipCNCheck
+          $session=Enter-PSSession -ComputerName  $(machineName) -port "5986" -Credential $cred -useSSL -SessionOption $Skip
+          Write-Host "PowerShell on Target Machines Task Equivalent GitHub Action"
+          Test-WSMan
+          Get-ChildItem Env:
+        errorActionPreference: Stop
+        failOnStandardError: false
+        azPSVersion: latest
+    - name: Run a multi-line script
+      run: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+
