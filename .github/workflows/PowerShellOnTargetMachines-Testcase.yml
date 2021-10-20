@@ -30,8 +30,8 @@ jobs:
     - name: Run PowerShell on Target Machines
       uses: azure/powershell@v1
       env:
-        sysAccount: valetAdmin
-        machineName: williamh-test-vm1.westus.cloudapp.azure.com
+        sysAccount: "valetAdmin"
+        machineName: "williamh-test-vm1.westus.cloudapp.azure.com"
       with:
         inlineScript: |
           $sysAccount = ${{ env.sysAccount }}
