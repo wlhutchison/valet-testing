@@ -38,11 +38,13 @@ jobs:
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.sysAccount }}", $securePwd)
           $sessionOptions = New-PSSessionOption ${{ env.sessionOptions }}
-          $session = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
+          $session = New-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
+          Invoke-Command -Session $session -ScriptBlock {
           $title = "PowerShellOnTargetMachines Transformer Output Test on $env:COMPUTERNAME"
           Write-Output $title
           Test-WSMan
           Get-ChildItem Env:
+          }
           Exit-PSSession
         errorActionPreference: Stop
         failOnStandardError: false
