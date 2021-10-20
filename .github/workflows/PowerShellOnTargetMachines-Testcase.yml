@@ -32,11 +32,12 @@ jobs:
       env:
         sysAccount: "valetAdmin"
         machineName: "williamh-test-vm1.westus.cloudapp.azure.com"
+        sessionOptions: "-SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block"
       with:
         inlineScript: |
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.sysAccount }}", $securePwd)
-          $ession = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $session_options = -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
+          $ession = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption ${{ env.sessionOptions }}
           Write-Output "PowerShellOnTargetMachines Transformer Output Test"
           Test-WSMan
           Get-ChildItem Env:
