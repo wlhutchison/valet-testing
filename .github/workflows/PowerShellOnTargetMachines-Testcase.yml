@@ -44,7 +44,7 @@ jobs:
             $session = New-PSSession -ComputerName $machine -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
             Invoke-Command -Session $session -ScriptBlock {
               $title = "PowerShellOnTargetMachines Transformer Output Test on $env:COMPUTERNAME"
-              Write-Output $title
+              Write-Host $title
               Test-WSMan
               Get-ChildItem Env:
               Exit-PSSession
