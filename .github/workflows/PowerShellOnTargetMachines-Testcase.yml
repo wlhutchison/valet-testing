@@ -34,10 +34,8 @@ jobs:
         machineName: "williamh-test-vm1.westus.cloudapp.azure.com"
       with:
         inlineScript: |
-          $sysAccount = ${{ env.sysAccount }}
-          $sysPassword = ${{ secrets.sysPassword }}
-          $securePwd =  ConvertTo-SecureString -String $sysPassword -AsPlainText -Force
-          $cred = New-Object System.Management.Automation.PSCredential($sysAccount, $securePwd)
+          $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential(${{ env.sysAccount }}, $securePwd)
           $ession = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $session_options = -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           Write-Output "PowerShellOnTargetMachines Transformer Output Test"
           Test-WSMan
