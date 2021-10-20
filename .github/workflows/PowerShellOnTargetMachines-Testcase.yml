@@ -37,7 +37,8 @@ jobs:
         inlineScript: |
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.sysAccount }}", $securePwd)
-          $ession = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption "${{ env.sessionOptions }}"
+          $sessionOptions = New-PSSessionOption "${{ env.sessionOptions }}"
+          $session = Enter-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
           Write-Output "PowerShellOnTargetMachines Transformer Output Test"
           Test-WSMan
           Get-ChildItem Env:
