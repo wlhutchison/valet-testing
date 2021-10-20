@@ -31,19 +31,23 @@ jobs:
       uses: azure/powershell@v1
       env:
         sysAccount: "valetAdmin"
-        machineName: "williamh-test-vm1.westus.cloudapp.azure.com"
+        machines: "williamh-test-vm1.westus.cloudapp.azure.com,williamh-test-vm1.westus.cloudapp.azure.com,williamh-test-vm1.westus.cloudapp.azure.com"
         sessionOptions: "-SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block"
       with:
         inlineScript: |
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.sysAccount }}", $securePwd)
           $sessionOptions = New-PSSessionOption ${{ env.sessionOptions }}
-          $session = New-PSSession -ComputerName ${{ env.machineName }} -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
-          Invoke-Command -Session $session -ScriptBlock {
-          $title = "PowerShellOnTargetMachines Transformer Output Test on $env:COMPUTERNAME"
-          Write-Output $title
-          Test-WSMan
-          Get-ChildItem Env:
+          $machineNames = "${{ env.machines }}".Split(",")
+          foreach ($machine in $machineNames)
+          {
+            $session = New-PSSession -ComputerName $machine -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
+            Invoke-Command -Session $session -ScriptBlock {
+            $title = "PowerShellOnTargetMachines Transformer Output Test on $env:COMPUTERNAME"
+            Write-Output $title
+            Test-WSMan
+            Get-ChildItem Env:
+            }
           }
           Exit-PSSession
         errorActionPreference: Stop
