@@ -42,3 +42,6 @@ jobs:
           Write-Output "PowerShellOnTargetMachines Transformer Output Test"
           Test-WSMan
           Get-ChildItem Env:
+        errorActionPreference: Stop
+        failOnStandardError: false
+        azPSVersion: 3.1.0
