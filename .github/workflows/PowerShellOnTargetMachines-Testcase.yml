@@ -35,7 +35,7 @@ jobs:
         inlineScript: |-
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.SYSACCOUNT }}", $securePwd)
-          $sessionOptions = New-PSSessionOption "-SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block"
+          $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $machineNames = "${env.MACHINES}".split(",")
           foreach($machine in $machineNames)
           {
