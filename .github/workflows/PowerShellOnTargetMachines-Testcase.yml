@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  MACHINENAME: williamh-test-vm1.westus.cloudapp.azure.com,williamh-test-vm2.westus.cloudapp.azure.com,williamh-test-vm3.westus.cloudapp.azure.com
+  MACHINENAME: williamh-test-vm1.westus.cloudapp.azure.com:5986,williamh-test-vm2.westus.cloudapp.azure.com:5986,williamh-test-vm3.westus.cloudapp.azure.com:5986
   SYSACCOUNT: valetAdmin
   SYSTEM.DEBUG: 'false'
 jobs:
@@ -39,7 +39,10 @@ jobs:
           $machineNames = "${{ env.MACHINENAME }}".split(",")
           foreach($machine in $machineNames)
           {
-           $session = New-PSSession -ComputerName $machine -port '5986' -Credential $cred -useSSL -SessionOption $sessionOptions
+           $Spec = $machine.split(":")
+           $fqdn = $Spec[0]
+           $port = $Spec[1]
+           $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
            Invoke-Command -Session $session -ScriptBlock {
           Write-Output "Hello World"
           Test-WSMan
