@@ -44,10 +44,8 @@ jobs:
            $port = $Spec[1]
            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
            Invoke-Command -Session $session -ScriptBlock {
-          Write-Output "Hello World"
-          Test-WSMan
-          Get-ChildItem Env:
-           Exit-PSSession
+            Get-ChildItem Env:
+            Exit-PSSession
            }
           }
         errorActionPreference: Stop
