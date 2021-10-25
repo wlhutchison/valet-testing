@@ -38,8 +38,11 @@ jobs:
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $sb = [scriptblock]::Create(
             {
+              Write-Output "*** Get-ChildItem Env: ***"
               Get-ChildItem Env:
+              Write-Output "*** Get-Service ***"
               Get-Service
+              Write-Output "*** Get-Process ***"
               Get-Process
               Exit-PSSession
             }
