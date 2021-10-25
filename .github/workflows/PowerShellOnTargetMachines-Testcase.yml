@@ -38,7 +38,10 @@ jobs:
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $sb = [scriptblock]::Create(
             {
-              Test-WSMan
+              Get-ChildItem Env:
+              Get-Service
+              Get-Process
+              Exit-PSSession
             }
            )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
