@@ -44,7 +44,6 @@ jobs:
               Get-Service
               Write-Output "*** Get-Process ***"
               Get-Process
-              Exit-PSSession
             }
            )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
