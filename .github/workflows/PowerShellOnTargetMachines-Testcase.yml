@@ -41,9 +41,9 @@ jobs:
               Write-Output "*** Get-ChildItem Env: ***"
               Get-ChildItem Env:
               Write-Output "*** Get-Process ***"
-              Get-Process | Format-Table
+              Get-Process | Format-Table -View priority
               Write-Output "*** Get-Service ***"
-              Get-Service | Format-Table
+              Get-Service | Sort-Object status
             }
            )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
