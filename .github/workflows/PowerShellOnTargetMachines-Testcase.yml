@@ -36,11 +36,11 @@ jobs:
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.SYSACCOUNT }}", $securePwd)
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
-          $sb = [scriptblock]::Create(  {
-            Test-WSMan
-            Get-ChildItem Env:
-            Exit-PSSession
-           } )
+          $sb = [scriptblock]::Create(
+            {
+              Test-WSMan
+            }
+           )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
           foreach($machine in $machineNames)
           {
