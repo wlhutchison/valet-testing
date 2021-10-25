@@ -40,10 +40,10 @@ jobs:
             {
               Write-Output "*** Get-ChildItem Env: ***"
               Get-ChildItem Env:
-              Write-Output "*** Get-Service ***"
-              Get-Service
               Write-Output "*** Get-Process ***"
               Get-Process
+              Write-Output "*** Get-Service ***"
+              Get-Service
             }
            )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
