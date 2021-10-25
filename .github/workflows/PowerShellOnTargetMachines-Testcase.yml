@@ -41,9 +41,9 @@ jobs:
               Write-Output "*** Get-ChildItem Env: ***"
               Get-ChildItem Env:
               Write-Output "*** Get-Process ***"
-              Get-Process
+              Get-Process | Format-Table
               Write-Output "*** Get-Service ***"
-              Get-Service
+              Get-Service | Format-Table
             }
            )
           $machineNames = "${{ env.MACHINENAME }}".split(",")
@@ -54,7 +54,7 @@ jobs:
            $port = $Spec[1]
            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
            Invoke-Command -Session $session -ScriptBlock $sb
-          }
+          
         errorActionPreference: Stop
         failOnStandardError: false
         azPSVersion: 3.1.0
