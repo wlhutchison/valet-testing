@@ -38,11 +38,11 @@ jobs:
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $sb = [scriptblock]::Create(
             {
-              Write-Output "*** Get Environment Settings ***"
+              Write-Output "Get Environment Settings"
               Get-ChildItem Env:
-              Write-Output "*** Get Process Table  ***"
+              Write-Output "Get Process Table"
               Get-Process | Format-Table -View priority
-              Write-Output "*** Get Services ***"
+              Write-Output "Get Services"
               Get-Service | Sort-Object status
             }
            )
