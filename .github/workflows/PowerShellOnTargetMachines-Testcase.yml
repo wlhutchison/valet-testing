@@ -53,7 +53,7 @@ jobs:
            $fqdn = $Spec[0]
            $port = $Spec[1]
            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
-           Invoke-Command -Session $session -ScriptBlock $sb
+           Invoke-AzVMCommand -Session $session -ScriptBlock $sb
           
         errorActionPreference: Stop
         failOnStandardError: false
