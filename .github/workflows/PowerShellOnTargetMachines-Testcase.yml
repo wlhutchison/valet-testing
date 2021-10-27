@@ -33,34 +33,34 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
-          $cred = New-Object System.Management.Automation.PSCredential("${{ env.SYSACCOUNT }}", $securePwd)
-          $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
-          $sb = [scriptblock]::Create(
-            {
-              Write-Host
-              Write-Host "*** Get Environment Settings ***" -ForeGroundColor Red
-              Write-Host
-              Get-ChildItem Env:
-              Write-Host
-              Write-Host "*** Get Process Table ***" -ForeGroundColor Red
-              Write-Host
-              Get-Process | Format-Table -View priority
-              Write-Host
-              Write-Host "*** Get Services ***" -ForeGroundColor Red
-              Write-Host
-              Get-Service | Sort-Object status
-            }
-           )
-          $machineNames = "${{ env.MACHINENAME }}".split(",")
-          foreach($machine in $machineNames)
+        $securePwd = ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential("${{ env.SYSACCOUNT }}", $securePwd)
+        $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
+        $scriptBlock = [scriptblock]::Create(
           {
-           $Spec = $machine.split(":")
-           $fqdn = $Spec[0]
-           $port = $Spec[1]
-           $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
-           Invoke-Command -Session $session -ScriptBlock $sb
-          }
+            Write-Host
+            Write-Host "*** Get Environment Settings ***" -ForeGroundColor Red
+            Write-Host
+            Get-ChildItem Env:
+            Write-Host
+            Write-Host "*** Get Process Table ***" -ForeGroundColor Red
+            Write-Host
+            Get-Process | Format-Table -View priority
+            Write-Host
+            Write-Host "*** Get Services ***" -ForeGroundColor Red
+            Write-Host
+            Get-Service | Sort-Object status
+            Write-Host
+          })
+        $machineNames = "${{ env.MACHINENAME }}".split(",")"
+        foreach($machine in $machineNames)"
+        {
+          $spec = $machine.split(":")
+          $fqdn = $spec[0]
+          $port = [String]::IsNullOrWhiteSpace($spec[1]) ? "5986" : $spec[1]
+          $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
+          Invoke-Command -Session $session -ScriptBlock $scriptBlock
+        }
         errorActionPreference: Stop
         failOnStandardError: false
         azPSVersion: 3.1.0
