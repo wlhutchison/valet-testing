@@ -52,8 +52,8 @@ jobs:
             Get-Service | Sort-Object status
             Write-Host
           })
-          $machineNames = "${{ env.MACHINENAME }}".split(",")"
-          foreach($machine in $machineNames)"
+          $machineNames = "${{ env.MACHINENAME }}".split(",")
+          foreach($machine in $machineNames)
           {
             $spec = $machine.split(":")
             $fqdn = $spec[0]
