@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  MACHINENAME: williamh-test-vm1.westus.cloudapp.azure.com:5986
+  MACHINENAME: williamh-test-vm1.westus.cloudapp.azure.com
   SYSACCOUNT: valetAdmin
   SYSTEM.DEBUG: 'false'
 jobs:
