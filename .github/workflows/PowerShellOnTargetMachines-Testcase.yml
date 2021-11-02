@@ -15,9 +15,11 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  MACHINENAME: williamh-test-vm1.westus.cloudapp.azure.com:5986
-  SYSACCOUNT: valetAdmin
-  SYSTEM.DEBUG: 'false'
+  BuildParameters_SessionVariables: 5
+  Parameters_SessionVariables: "$A=1,$B=2,$C=3,$D=4,$E=5"
+  machineName: williamh-test-vm1.westus.cloudapp.azure.com:5987
+  sysAccount: valetAdmin
+  system_debug: 'false'
 jobs:
   Job_1:
     name: Agent job 1
@@ -33,25 +35,18 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |-
-          $securePwd = ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
+          $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.SYSACCOUNT }}", $securePwd)
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $scriptBlock = [scriptblock]::Create(
-          {
-            Write-Host
-            Write-Host "*** Get Environment Settings ***" -ForeGroundColor Red
-            Write-Host
-            Get-ChildItem Env:
-            Write-Host
-            Write-Host "*** Get Process Table ***" -ForeGroundColor Red
-            Write-Host
-            Get-Process | Format-Table -View priority
-            Write-Host
-            Write-Host "*** Get Services ***" -ForeGroundColor Red
-            Write-Host
-            Get-Service | Sort-Object status
-            Write-Host
-          })
+            {
+              $sessionVariables = "${{ env.Parameters_SessionVariables}}".split(",")
+              foreach($sessionVariable in $sessionVariables)
+                $sessionVariable
+              cd C:\Tools
+              C:\Scripts\InitializationScript.ps1
+                  C:\Scripts\MainScript.ps1 -p1 $A -p2 $B -p3 $C
+            })
           $machineNames = "${{ env.MACHINENAME }}".split(",")
           foreach($machine in $machineNames)
           {
