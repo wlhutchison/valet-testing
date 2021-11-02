@@ -42,7 +42,9 @@ jobs:
             {
               $sessionVariables = "${{ env.Parameters_SessionVariables}}".split(",")
               foreach($sessionVariable in $sessionVariables)
+              {
                 $sessionVariable
+              }
               cd C:\Tools
               C:\Scripts\InitializationScript.ps1
                   C:\Scripts\MainScript.ps1 -p1 $A -p2 $B -p3 $C
