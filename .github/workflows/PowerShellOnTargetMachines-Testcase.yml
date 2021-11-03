@@ -17,7 +17,7 @@ on:
 env:
   BuildParameters_SessionVariables: 5
   Parameters_SessionVariables: "$A=1,$B=2,$C=3,$D=4,$E=5"
-  machineName: williamh-test-vm1.westus.cloudapp.azure.com:5987
+  machineName: williamh-test-vm1.westus.cloudapp.azure.com:5986
   sysAccount: valetAdmin
   system_debug: 'false'
 jobs:
@@ -40,12 +40,12 @@ jobs:
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $scriptBlock = [scriptblock]::Create(
             {
-              $sessionVariables = "${{ env.Parameters_SessionVariables}}".split(",")
-              foreach($sessionVariable in $sessionVariables)
+              $sessionVariableCommands = "${{ env.Parameters_SessionVariables}}".split(",")
+              foreach($sessionVariableCommand in $sessionVariableCommands)
               {
-                $sessionVariable
+                $sessionVariableCommand
               }
-              cd C:\Tools
+              cd C:\Scripts
               C:\Scripts\InitializationScript.ps1
                   C:\Scripts\MainScript.ps1 -p1 $A -p2 $B -p3 $C
             })
@@ -54,7 +54,7 @@ jobs:
           {
             $spec = $machine.split(":")
             $fqdn = $spec[0]
-            $port = [String]::IsNullOrWhiteSpace($spec[1]) ? "5985" : $spec[1]
+            $port = [String]::IsNullOrWhiteSpace($spec[1]) ? "5986" : $spec[1]
             $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL -SessionOption $sessionOptions
             Invoke-Command -Session $session -ScriptBlock $scriptBlock
           }
