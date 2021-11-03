@@ -41,8 +41,6 @@ jobs:
           $scriptBlock = [scriptblock]::Create(
             {
               # Identify any session variable (form is $var1=$value1,$var2=$value2)
-              $temp = "${{ env.Parameters_SessionVariables}}".replace( "$", "`$")
-              write-Host $temp
               $sessionVariablesCommands = '${{ env.Parameters_SessionVariables}}'.split(",")
               # Process each session variable
               foreach($sessionVariableCommand in $sessionVariablesCommands)
