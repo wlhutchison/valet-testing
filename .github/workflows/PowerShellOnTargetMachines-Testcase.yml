@@ -40,10 +40,18 @@ jobs:
           $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
           $scriptBlock = [scriptblock]::Create(
             {
-              $sessionVariableCommands = "${{ env.Parameters_SessionVariables}}".split(",")
-              foreach($sessionVariableCommand in $sessionVariableCommands)
+              # Identify any session variable (form is $var1=$value1,$var2=$value2)
+              $sessionVariablesCommands = "${{ env.Parameters_SessionVariables}}".split(",")
+              # Process each session variable
+              foreach($sessionVariableCommand in $sessionVariablesCommands)
               {
-                $sessionVariableCommand
+                # Isolate the name portion and the value portion
+                $spec = $sessionVariableCommand.split("=")
+                $variable = $spec[0].split("`$")
+                $name = $variable[1]
+                $value = $spec[1]
+                # Set the variable
+                Set-Variable -Name $name -Value $value
               }
               cd C:\Scripts
               C:\Scripts\InitializationScript.ps1
