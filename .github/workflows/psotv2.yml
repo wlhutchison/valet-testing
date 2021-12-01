@@ -1,0 +1,36 @@
+name: PSotv2
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run PowerShell on target machines
+      continue-on-error: true
+      uses: Azure/login@v1
+      with:
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        enable-AzPSSession: true
+    - name: Execute Powershell
+      uses: azure/powershell@v1
+      env:
+        Machines: williamh-test-vm1.westus.cloudapp.azure.com:5986
+        UserName: valetAdmin
+      with:
+        InlineScript: |
+          $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential("${{ env.UserName }}", $securePwd)
+          $scriptBlock = [scriptblock]::Create(
+            {
+              Write-Host "Hello William"
+            }
+          foreach($machine in $env.Machines.split(','))
+          {
+            $spec = $machine.split(":")
+            $fqdn = $spec[0]
+            $port = [String]::IsNullOrWhiteSpace($spec[1]) ? "5986" : $spec[1]
+            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL
+            Invoke-Command -Session $session -ScriptBlock $scriptBlock
+          }
+ 
