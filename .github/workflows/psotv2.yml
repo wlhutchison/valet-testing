@@ -25,7 +25,7 @@ jobs:
             {
               Write-Host "Hello William"
             })
-          foreach($machine in ${{ env.Machines }}.split(','))
+          foreach($machine in "${{ env.Machines }}".split(','))
           {
             $spec = $machine.split(":")
             $fqdn = $spec[0]
