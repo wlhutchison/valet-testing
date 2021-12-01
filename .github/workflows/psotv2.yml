@@ -21,7 +21,8 @@ jobs:
         InlineScript: |
           $securePwd =  ConvertTo-SecureString -String ${{ secrets.sysPassword }} -AsPlainText -Force
           $cred = New-Object System.Management.Automation.PSCredential("${{ env.UserName }}", $securePwd)
-          $scriptBlock = [scriptblock]::Create(
+          $sessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -IdleTimeout 7200000 -OperationTimeout 0 -OutputBufferingMode Block
+          $scriptBlock = [scriptblock]::Create( 
             {
               Write-Host "Hello William"
             })
@@ -30,7 +31,7 @@ jobs:
             $spec = $machine.split(":")
             $fqdn = $spec[0]
             $port = [String]::IsNullOrWhiteSpace($spec[1]) ? "5986" : $spec[1]
-            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL
+            $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL  -SessionOption $sessionOptions
             Invoke-Command -Session $session -ScriptBlock $scriptBlock
           }
         azPSversion: latest
