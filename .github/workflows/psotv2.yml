@@ -24,7 +24,7 @@ jobs:
           $scriptBlock = [scriptblock]::Create(
             {
               Write-Host "Hello William"
-            }
+            })
           foreach($machine in $env.Machines.split(','))
           {
             $spec = $machine.split(":")
