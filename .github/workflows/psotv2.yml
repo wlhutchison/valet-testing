@@ -33,4 +33,5 @@ jobs:
             $session = New-PSSession -ComputerName $fqdn -port $port -Credential $cred -useSSL
             Invoke-Command -Session $session -ScriptBlock $scriptBlock
           }
+        azPSversion: latest
  
