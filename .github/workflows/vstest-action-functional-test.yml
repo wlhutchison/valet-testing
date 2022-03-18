@@ -9,14 +9,28 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build:
   # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
     runs-on: windows-latest
+    name: Build the apps
     steps:
-      - uses: actions/checkout@v2
-      - name: 'VSTest Step'
-        uses: microsoft/vstest-action@main
-        with:
-            testAssembly: '**\$(BuildConfiguration)\*test*.dll;-:**\obj\**'
-            searchFolder: ./tests/
+    - uses: actions/checkout@v2
+    - name: Print Env Vars
+      shell: pwsh
+      run: |
+        gci env:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.102
+    - name: Install dependencies
+      working-directory: './src/vstest-functional-test/'
+      run: dotnet restore
+    - name: Build
+      working-directory: './src/vstest-functional-test/'
+      run: dotnet build --configuration Debug --no-restore
+    - name: 'VSTest Step'
+      uses: microsoft/vstest-action@main
+      with:
+          testAssembly: '**\*test*.dll;-:**\obj\**'
+          searchFolder: './src/vstest-functional-test/'
