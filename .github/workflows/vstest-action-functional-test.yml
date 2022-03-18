@@ -24,6 +24,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: microsoft/vstest-action@main
+      - name: 'VSTest Step '
+        uses: microsoft/vstest-action@main
+        with:
+            testAssembly: '**\$(BuildConfiguration)\*test*.dll;-:**\obj\**'
       - name: Send greeting
         run: echo "Hello ${{ github.event.inputs.name }}"
