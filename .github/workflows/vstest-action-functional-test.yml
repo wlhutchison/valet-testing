@@ -36,4 +36,4 @@ jobs:
       uses: microsoft/vstest-action@main
       with:
           testAssembly: '**\*test*.dll;-:**\obj\**'
-          searchFolder: '.\src\vstest-functional-test\bin\Debug\net6.0'
+          searchFolder: './src/vstest-functional-test/bin/Debug/net6.0'
