@@ -35,5 +35,5 @@ jobs:
     - name: 'VSTest Step'
       uses: microsoft/vstest-action@main
       with:
-          testAssembly: '**\*test*.dll;-:**\obj\**'
-          searchFolder: './src/vstest-functional-test/bin/Debug/net6.0'
+          testAssembly: 'vstest-functional-test.dll'
+          searchFolder: './src/vstest-functional-test/bin/Debug/net6.0/'
