@@ -29,6 +29,9 @@ jobs:
     - name: Build
       working-directory: './src/vstest-functional-test/'
       run: dotnet build --configuration Debug --no-restore
+    - name: Test
+      working-directory: './src/vstest-functional-test/'
+      run: dotnet test 
     - name: 'VSTest Step'
       uses: microsoft/vstest-action@main
       with:
